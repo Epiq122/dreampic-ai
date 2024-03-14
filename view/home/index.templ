@@ -1,5 +1,9 @@
 package home
 
-templ Index(){
-  <div>Hi from the home page</div>
+import "github.com/Epiq122/dreampic-ai/view/layout"
+
+templ Index() {
+	@layout.App(true) {
+		<div>Hi from the home page</div>
+	}
 }
