@@ -22,6 +22,8 @@ func main() {
 
 	router := chi.NewMux()
 
+	router.Use(handler.WithUser)
+
 	// render config file - static file server ( FILE SYSTEM )
 	router.Handle("/*", http.StripPrefix("/", http.FileServer(http.FS(FS))))
 
