@@ -30,6 +30,8 @@ func main() {
 
 	router.Get("/", handler.MakeHandler(handler.HandleHomeIndex))
 	router.Get("/login", handler.MakeHandler(handler.HandleLoginIndex))
+	router.Get("/signup", handler.MakeHandler(handler.HandleSignupIndex))
+	router.Post("/signup", handler.MakeHandler(handler.HandleSignupCreate))
 	router.Post("/login", handler.MakeHandler(handler.HandleLoginCreate))
 
 	port := os.Getenv("HTTP_LISTEN_ADDR")
