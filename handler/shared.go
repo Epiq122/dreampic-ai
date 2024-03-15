@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Epiq122/dreampic-ai/models"
+	"github.com/a-h/templ"
 )
 
 func getAuthenticatedUser(r *http.Request) models.AuthenticatedUser {
@@ -21,4 +22,9 @@ func MakeHandler(h func(http.ResponseWriter, *http.Request) error) http.HandlerF
 			slog.Error("internal server error", "err", err, "path", r.URL.Path)
 		}
 	}
+}
+
+func render(r *http.Request, w http.ResponseWriter, component templ.Component) error {
+
+	return component.Render(r.Context(), w)
 }
