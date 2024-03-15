@@ -1,10 +1,13 @@
 package handler
 
 import (
+	"log/slog"
 	"net/http"
 
+	"github.com/Epiq122/dreampic-ai/pkg/sb"
 	"github.com/Epiq122/dreampic-ai/pkg/util"
 	"github.com/Epiq122/dreampic-ai/view/auth"
+
 	"github.com/nedpals/supabase-go"
 )
 
@@ -31,12 +34,24 @@ func HandleLoginCreate(w http.ResponseWriter, r *http.Request) error {
 		}))
 	}
 
-	// resp, err := sb.Client.Auth.SignIn(r.Context(), credentials)
-	// if err != nil {
-	// 	return render(r, w, auth.LoginForm(credentials, auth.LoginErrors{
-	// 		InvalidCredentials: "please check your credentials and try again",
-	// 	}))
-	// }
+	resp, err := sb.Client.Auth.SignIn(r.Context(), credentials)
+	if err != nil {
+		slog.Error("failed to login", "err", err)
+		return render(r, w, auth.LoginForm(credentials, auth.LoginErrors{
+			InvalidCredentials: "please check your credentials and try again",
+		}))
+	}
+
+	cookie := &http.Cookie{
+		Name:     "at",
+		Value:    resp.AccessToken,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+	}
+	http.SetCookie(w, cookie)
+
+	http.Redirect(w, r, "/", http.StatusFound)
 
 	return nil
 }
