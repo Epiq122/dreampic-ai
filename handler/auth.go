@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"log/slog"
 	"net/http"
 
@@ -72,9 +71,9 @@ func HandleAuthCallBack(w http.ResponseWriter, r *http.Request) error {
 	if len(accessToken) == 0 {
 		return render(r, w, auth.CallbackScript())
 	}
-	fmt.Println(accessToken)
-	// setAuthCookie(w, accessToken)
-	// http.Redirect(w, r, "/", http.StatusFound)
+	// fmt.Println(accessToken)
+	setAuthCookie(w, accessToken)
+	http.Redirect(w, r, "/", http.StatusFound)
 	return nil
 
 }
