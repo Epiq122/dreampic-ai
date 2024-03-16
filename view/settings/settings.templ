@@ -1,0 +1,10 @@
+package settings
+
+import "github.com/Epiq122/dreampic-ai/view/layout"
+import "github.com/Epiq122/dreampic-ai/models"
+
+templ Index(user models.AuthenticatedUser) {
+	@layout.App(true) {
+		<div>hello { user.Email }</div>
+	}
+}

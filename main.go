@@ -36,6 +36,13 @@ func main() {
 	router.Post("/logout", handler.MakeHandler(handler.HandleLogoutCreate))
 	router.Get("/auth/callback", handler.MakeHandler(handler.HandleAuthCallBack))
 
+	// protected routes
+	router.Group(func(auth chi.Router) {
+		auth.Use(handler.WithAuth)
+
+		auth.Get("/settings", handler.MakeHandler(handler.HandleSettingsIndex))
+	})
+
 	port := os.Getenv("HTTP_LISTEN_ADDR")
 	slog.Info("application running", "port", port)
 	log.Fatal(http.ListenAndServe(os.Getenv("HTTP_LISTEN_ADDR"), router))
