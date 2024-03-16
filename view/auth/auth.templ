@@ -26,9 +26,7 @@ templ Signup() {
 }
 
 templ SignupSuccess(email string) {
-	@layout.App(false) {
-		<div>A confirmation email has been sent to: <span class="font-semibold text-success">{ email }</span></div>
-	}
+	<div>A confirmation email has been sent to: <span class="font-semibold text-success">{ email }</span></div>
 }
 
 type SignupParams struct {
@@ -148,4 +146,12 @@ templ LoginForm(creds supabase.UserCredentials, errors LoginErrors) {
 			Login <i class="fa fa-arrow-right" aria-hidden="true"></i>
 		</button>
 	</form>
+}
+
+templ CallbackScript() {
+	<script>
+	var url = window.location.href
+	var newUrl = url.replace("#","?")
+	window.location.href = newUrl
+	</script>
 }
