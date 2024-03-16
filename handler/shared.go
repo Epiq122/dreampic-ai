@@ -16,6 +16,16 @@ func getAuthenticatedUser(r *http.Request) models.AuthenticatedUser {
 	return user
 }
 
+func hxRedirect(w http.ResponseWriter, r *http.Request, to string) error {
+	if len(r.Header.Get("HX-Request")) > 0 {
+		w.Header().Set("HX-Redirect", to)
+		w.WriteHeader(http.StatusFound)
+		return nil
+	}
+	http.Redirect(w, r, to, http.StatusFound)
+	return nil
+}
+
 func MakeHandler(h func(http.ResponseWriter, *http.Request) error) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := h(w, r); err != nil {
