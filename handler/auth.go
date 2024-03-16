@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"net/http"
 
+	"github.com/Epiq122/dreampic-ai/pkg/kit/validate"
 	"github.com/Epiq122/dreampic-ai/pkg/sb"
 	"github.com/Epiq122/dreampic-ai/view/auth"
 
@@ -21,9 +22,20 @@ func HandleSignupIndex(w http.ResponseWriter, r *http.Request) error {
 }
 
 func HandleSignupCreate(w http.ResponseWriter, r *http.Request) error {
-
+	params := auth.SignupParams{
+		Email:           r.FormValue("email"),
+		Password:        r.FormValue("password"),
+		ConfirmPassword: r.FormValue("confirmPassword"),
+	}
+	errors := auth.SignupErrors{}
+	if ok := validate.New(&params, validate.Fields{
+		"Email":           validate.Rules(validate.Email),
+		"Password":        validate.Rules(validate.Password),
+		"ConfirmPassword": validate.Rules(validate.Equal(params.Password), validate.Message("passwords do not match")),
+	}).Validate(&errors); !ok {
+		return render(r, w, auth.SignupForm(params, errors))
+	}
 	return nil
-
 }
 
 func HandleLoginCreate(w http.ResponseWriter, r *http.Request) error {

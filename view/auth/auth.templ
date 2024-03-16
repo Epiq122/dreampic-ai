@@ -84,7 +84,7 @@ templ SignupForm(params SignupParams, errors SignupErrors) {
 				name="confirmPassword"
 				class="input input-bordered w-full"
 			/>
-			if len(errors.Password) > 0 {
+			if len(errors.ConfirmPassword) > 0 {
 				<div class="label-text-alt text-error">{ errors.ConfirmPassword }</div>
 			}
 		</div>
